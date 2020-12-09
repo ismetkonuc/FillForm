@@ -21,5 +21,11 @@ namespace BitMiracle.Docotic.Pdf.Samples
         public Bitmap Image { get; set; }
         public DateTime ApplicationDate { get; set; }
 
+        //public string ExamType { get; set; }
+        //public string ExamBuilding { get; set; }
+        //public string ExamClass { get; set; }
+        //public string ExamDeskNo { get; set; }
+        //public string ExamDate => "19/12/2020";
+        public Classroom Classroom { get; set; }
     }
 }

@@ -3,35 +3,44 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace BitMiracle.Docotic.Pdf.Samples
 {
     public static class ExcellFileOperations
     {
-        
-        public static List<ApplicantStudent> GetApplicantStudentsFromExcel()
+
+        public static List<ApplicantStudent> GetApplicantStudentsFromExcel(List<Classroom> classrooms)
         {
-            Console.WriteLine("Öğrenci isimleri Excel'den okunuyor...");
+            Console.WriteLine("Başvuru listesi Excel'den okunuyor...");
             // Excell dosyasını aç
             var excel = new ExcelQueryFactory();
-            excel.FileName = "Sample Data/gys.xlsx";
-            
+            excel.FileName = "Sample Data/basvurular.xlsx";
+
             //Exceldeki kolonları ApplicantStudent'taki proplarla eşleştir
-            excel.AddMapping<ApplicantStudent>(x=> x.Name, "Ad");
-            excel.AddMapping<ApplicantStudent>(x=>x.Surname, "Soyad");
-            excel.AddMapping<ApplicantStudent>(x=>x.IdentityNo, "Kimlik Numarası");
-            excel.AddMapping<ApplicantStudent>(x=>x.FatherName, "Baba Adı");
-            excel.AddMapping<ApplicantStudent>(x=>x.MailAddress, "Email");
+            excel.AddMapping<ApplicantStudent>(x => x.Name, "Ad");
+            excel.AddMapping<ApplicantStudent>(x => x.Surname, "Soyad");
+            excel.AddMapping<ApplicantStudent>(x => x.IdentityNo, "Kimlik Numarası");
+            excel.AddMapping<ApplicantStudent>(x => x.FatherName, "Baba Adı");
+            excel.AddMapping<ApplicantStudent>(x => x.MailAddress, "Email");
             excel.AddMapping<ApplicantStudent>(x => x.ApplicationDate, "Timestamp");
-            excel.AddMapping<ApplicantStudent>(x=> x.ImageUrl , "Fotoğraf");
+            excel.AddMapping<ApplicantStudent>(x => x.ImageUrl, "Fotoğraf");
+            //excel.AddMapping<ApplicantStudent>(x => x.ExamType, "Sınav Türü");
+            //excel.AddMapping<ApplicantStudent>(x => x.ExamBuilding, "Bina");
+            //excel.AddMapping<ApplicantStudent>(x => x.ExamClass, "Derslik");
+            //excel.AddMapping<ApplicantStudent>(x => x.ExamDeskNo, "Sıra");
+
+
+
 
             var people = from x in excel.Worksheet<ApplicantStudent>("applicantList") select x;
 
             //Image dosyalarını okumak için IQueryable'ı List tipine çevir
             List<ApplicantStudent> applicantStudents = people.ToList();
 
-           
+            applicantStudents = ClassroomOperations.AssignClassroomToApplicantStudents(applicantStudents, classrooms);
+
             return DownloadAllApplicantStudentsPhoto(applicantStudents);
         }
 
@@ -50,10 +59,9 @@ namespace BitMiracle.Docotic.Pdf.Samples
                 {
                     // aşağıdaki satıra şimdilik comment attım çünkü gerekli fotoğrafları indirildi. 
                     //fileDownloader.DownloadFile($"{applicantStudent.ImageUrl}", $"Outputs\\Photos\\{applicantStudent.IdentityNo}.jpg"); // google drive'dan foto indir
-
-
                     applicantStudent.Image = new Bitmap($"Outputs\\Photos\\{applicantStudent.IdentityNo}.jpg");
-                    
+
+
                 }
 
             }

@@ -27,6 +27,7 @@ namespace BitMiracle.Docotic.Pdf.Samples
             catch (WebException e)
             {
                 Console.WriteLine("404 Hatası: Fotoğraf Bulunamadı:" + imageUrl);
+                Console.WriteLine(e.Response);
                 return null;
             }
 
