@@ -32,7 +32,7 @@ namespace BitMiracle.Docotic.Pdf.Samples
 
         public static List<Classroom> GetClassesWithApplicants(List<ApplicantStudent> applicantStudents)
         {
-            var classrooms = ClassroomOperations.SeedClassroom();
+            var classrooms = SeedClassroom();
 
             for (int i = 0; i < classrooms.Count; i++)
             {
