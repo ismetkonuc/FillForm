@@ -97,6 +97,10 @@ namespace BitMiracle.Docotic.Pdf.Samples
                                 ((PdfTextBox)controls[j]).Text = applicantStudents[i].ExamBuilding.ToUpper();
                                 break;
 
+                            case "sinavSaati":
+                                ((PdfTextBox) controls[j]).Text = "10:00";
+                                break;
+
                             case "sinavSalonu":
                                 ((PdfTextBox)controls[j]).Text = applicantStudents[i].ExamClass.ToUpper();
                                 break;
