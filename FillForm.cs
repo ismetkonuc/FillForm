@@ -18,7 +18,7 @@ namespace BitMiracle.Docotic.Pdf.Samples
 
             var applicantStudents = ExcellFileOperations.GetApplicantStudentsFromExcel();
 
-            //CreateApplicantForm(applicantStudents);
+            CreateApplicantForm(applicantStudents);
 
             var classroomList = ClassroomOperations.GetClassesWithApplicants(applicantStudents);
 
@@ -27,8 +27,7 @@ namespace BitMiracle.Docotic.Pdf.Samples
             //CreateClassroomParticipantsForm(ClassroomOperations.GetClassesWithApplicants(applicantStudents));
 
 
-            Console.WriteLine("Oluşturulan ilk belge açılıyor...");
-            Process.Start($@"C:\Users\ismet\Desktop\FillForm\bin\Debug\Outputs\{applicantStudents[0].IdentityNo}{applicantStudents[0].Name}.pdf"); // path değiştir.
+            Console.WriteLine("İşlem bitti...");
         }
 
         private static void CreateApplicantForm(List<ApplicantStudent> applicantStudents)
