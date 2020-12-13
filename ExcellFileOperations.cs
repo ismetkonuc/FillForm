@@ -11,12 +11,12 @@ namespace BitMiracle.Docotic.Pdf.Samples
     public static class ExcellFileOperations
     {
 
-        public static List<ApplicantStudent> GetApplicantStudentsFromExcel(List<Classroom> classrooms)
+        public static List<ApplicantStudent> GetApplicantStudentsFromExcel()
         {
             Console.WriteLine("Başvuru listesi Excel'den okunuyor...");
             // Excell dosyasını aç
             var excel = new ExcelQueryFactory();
-            excel.FileName = "Sample Data/basvurular.xlsx";
+            excel.FileName = "Sample Data/gys.xlsx";
 
             //Exceldeki kolonları ApplicantStudent'taki proplarla eşleştir
             excel.AddMapping<ApplicantStudent>(x => x.Name, "Ad");
@@ -26,12 +26,11 @@ namespace BitMiracle.Docotic.Pdf.Samples
             excel.AddMapping<ApplicantStudent>(x => x.MailAddress, "Email");
             excel.AddMapping<ApplicantStudent>(x => x.ApplicationDate, "Timestamp");
             excel.AddMapping<ApplicantStudent>(x => x.ImageUrl, "Fotoğraf");
-            //excel.AddMapping<ApplicantStudent>(x => x.ExamType, "Sınav Türü");
-            //excel.AddMapping<ApplicantStudent>(x => x.ExamBuilding, "Bina");
-            //excel.AddMapping<ApplicantStudent>(x => x.ExamClass, "Derslik");
-            //excel.AddMapping<ApplicantStudent>(x => x.ExamDeskNo, "Sıra");
-
-
+            excel.AddMapping<ApplicantStudent>(x => x.ExamType, "Sınav Türü");
+            excel.AddMapping<ApplicantStudent>(x => x.ExamBuilding, "Bina");
+            excel.AddMapping<ApplicantStudent>(x => x.ExamClass, "Derslik");
+            excel.AddMapping<ApplicantStudent>(x => x.ExamDeskNo, "Sıra");
+            excel.AddMapping<ApplicantStudent>(x => x.ClassroomId, "GrupKodu");
 
 
             var people = from x in excel.Worksheet<ApplicantStudent>("applicantList") select x;
@@ -39,7 +38,6 @@ namespace BitMiracle.Docotic.Pdf.Samples
             //Image dosyalarını okumak için IQueryable'ı List tipine çevir
             List<ApplicantStudent> applicantStudents = people.ToList();
 
-            applicantStudents = ClassroomOperations.AssignClassroomToApplicantStudents(applicantStudents, classrooms);
 
             return DownloadAllApplicantStudentsPhoto(applicantStudents);
         }
